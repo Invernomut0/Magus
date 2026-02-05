@@ -1,34 +1,32 @@
 # Magus Conversation Agent
 
-Un custom component per Home Assistant che fornisce un agente conversazionale utilizzando un motore AI simile a GitHub Copilot (basato su OpenAI) per interpretare comandi vocali relativi alla domotica e rispondere tramite Alexa.
+# Magus Conversation Agent
+
+Un custom component per Home Assistant che fornisce un agente conversazionale utilizzando GitHub Copilot per interpretare comandi vocali relativi alla domotica.
 
 ## Installazione
 
-1. Copia la cartella `custom_components/magus_conversation_agent` nella directory `custom_components` della tua installazione Home Assistant.
+**Tramite HACS (consigliato):**
+1.  Aggiungi questo repository come Custom Repository in HACS.
+2.  Cerca "Magus Conversation Agent" e installa.
+3.  Riavvia Home Assistant.
 
-2. Riavvia Home Assistant.
+**Manuale:**
+1.  Copia la cartella `custom_components/magus_conversation_agent` nella directory `custom_components` della tua installazione Home Assistant.
+2.  Riavvia Home Assistant.
 
 ## Configurazione
 
-Aggiungi al tuo `configuration.yaml`:
-
-```yaml
-magus_conversation_agent:
-  api_key: "your_openai_api_key_here"
-
-conversation:
-  - name: Magus Agent
-    provider: magus_conversation_agent
-```
+1.  Vai in **Impostazioni** -> **Dispositivi e Servizi**.
+2.  Clicca su **+ AGGIUNGI INTEGRAZIONE**.
+3.  Cerca **Magus Conversation Agent**.
+4.  Segui le istruzioni a schermo per autenticarti con GitHub (Device Flow).
+5.  Seleziona l'entità di notifica (es. Alexa) per le risposte vocali.
 
 ## Funzionamento
 
-L'agente riceve input vocali, li elabora con l'AI per generare una risposta appropriata, e invia la risposta tramite il servizio `notify.alexa_media_echo_dot_di_lorenzo`.
+L'agente utilizza l'API di GitHub Copilot (emulando VS Code) per processare le richieste. Le risposte vengono inviate al servizio di notifica configurato.
 
-Nota: Poiché GitHub Copilot non ha un'API pubblica, questo componente utilizza OpenAI come motore AI. Se desideri utilizzare un altro servizio, modifica il codice in `conversation.py`.
+## Note
 
-## TODO
-
-- Migliorare l'integrazione con comandi domotica effettivi.
-- Aggiungere supporto per più servizi di notifica.
-- Implementare autenticazione sicura per l'API key.
+Questo componente richiede un abbonamento attivo a GitHub Copilot.
