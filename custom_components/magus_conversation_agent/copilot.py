@@ -15,8 +15,8 @@ GITHUB_ACCESS_TOKEN_URL = "https://github.com/login/oauth/access_token"
 GITHUB_COPILOT_TOKEN_URL = "https://api.github.com/copilot_internal/v2/token"
 COPILOT_CHAT_URL = "https://api.githubcopilot.com/chat/completions"
 
-# Client ID for VSCode (commonly used for this integration)
-CLIENT_ID = "01ab8ac9400c4e429b23cb99b9409569"
+# Client ID for GitHub Copilot Plugin (widely used by other integrations)
+CLIENT_ID = "Iv1.b507a08c87ecfe98"
 
 class MagusCopilotClient:
     """Client for interacting with GitHub Copilot."""
@@ -42,7 +42,8 @@ class MagusCopilotClient:
         }
         
         try:
-            async with self._session.post(GITHUB_DEVICE_CODE_URL, json=data, headers=headers) as resp:
+            # Use data=data to send as application/x-www-form-urlencoded
+            async with self._session.post(GITHUB_DEVICE_CODE_URL, data=data, headers=headers) as resp:
                 if resp.status != 200:
                     error_text = await resp.text()
                     _LOGGER.error("GitHub Device Flow Error %s: %s", resp.status, error_text)
@@ -69,7 +70,7 @@ class MagusCopilotClient:
 
         start_time = time.time()
         while time.time() - start_time < expires_in:
-            async with self._session.post(GITHUB_ACCESS_TOKEN_URL, json=data, headers=headers) as resp:
+            async with self._session.post(GITHUB_ACCESS_TOKEN_URL, data=data, headers=headers) as resp:
                 result = await resp.json()
                 
                 if "access_token" in result:
