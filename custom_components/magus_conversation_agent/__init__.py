@@ -29,7 +29,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     agent = MagusConversationAgent(hass, client, entry, notify_entity)
     
     from homeassistant.components.conversation import async_set_agent
-    await async_set_agent(hass, entry, agent)
+    async_set_agent(hass, entry, agent)
     
     return True
 
