@@ -1,0 +1,22 @@
+{
+    "config": {
+        "step": {
+            "device_auth": {
+                "title": "Autenticazione GitHub",
+                "description": "Visita **{verification_uri}** e inserisci il codice: **{user_code}**.\n\nDopo aver autorizzato l'applicazione, clicca su INVIA qui sotto."
+            },
+            "notify_config": {
+                "title": "Configurazione Notifiche",
+                "description": "Seleziona l'entità (es. Alexa) da usare per le risposte vocali."
+            }
+        },
+        "error": {
+            "authorization_pending": "Autorizzazione in attesa. Completa il login su GitHub e riprova.",
+            "connection_error": "Impossibile connettersi a GitHub.",
+            "unknown_error": "Si è verificato un errore sconosciuto."
+        },
+        "abort": {
+            "connection_error": "Impossibile connettersi a GitHub."
+        }
+    }
+}
