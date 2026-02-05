@@ -30,23 +30,34 @@ class MagusCopilotClient:
 
     async def request_device_code(self) -> Dict[str, Any]:
         """Request a device code for authentication."""
+    async def request_device_code(self) -> Dict[str, Any]:
+        """Request a device code for authentication."""
         headers = {
-            "Content-Type": "application/json",
             "Accept": "application/json",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.85.1 Chrome/108.0.5359.215 Electron/22.3.1 Safari/537.36",
+            "Editor-Version": "vscode/1.85.1",
+            "Editor-Plugin-Version": "copilot/1.155.0",
         }
         data = {
             "client_id": CLIENT_ID,
-            "scope": "read:user"  # Minimal scope, Copilot needs to be enabled on account
+            "scope": "read:user"
         }
         
-        async with self._session.post(GITHUB_DEVICE_CODE_URL, json=data, headers=headers) as resp:
-            resp.raise_for_status()
-            return await resp.json()
+        try:
+            # Use data=data to send as application/x-www-form-urlencoded
+            async with self._session.post(GITHUB_DEVICE_CODE_URL, data=data, headers=headers) as resp:
+                resp.raise_for_status()
+                return await resp.json()
+        except Exception as e:
+            _LOGGER.error("Error requesting device code from %s: %s", GITHUB_DEVICE_CODE_URL, e)
+            raise
+        except Exception as e:
+            _LOGGER.error("Error requesting device code from %s: %s", GITHUB_DEVICE_CODE_URL, e)
+            raise
 
     async def poll_for_token(self, device_code: str, interval: int, expires_in: int) -> Optional[str]:
         """Poll GitHub for the access token."""
         headers = {
-            "Content-Type": "application/json",
             "Accept": "application/json",
         }
         data = {
@@ -57,7 +68,7 @@ class MagusCopilotClient:
 
         start_time = time.time()
         while time.time() - start_time < expires_in:
-            async with self._session.post(GITHUB_ACCESS_TOKEN_URL, json=data, headers=headers) as resp:
+            async with self._session.post(GITHUB_ACCESS_TOKEN_URL, data=data, headers=headers) as resp:
                 result = await resp.json()
                 
                 if "access_token" in result:

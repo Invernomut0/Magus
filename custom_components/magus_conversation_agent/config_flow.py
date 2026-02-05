@@ -41,7 +41,7 @@ class MagusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             try:
                 self._device_code_data = await self._client.request_device_code()
             except Exception as e:
-                 _LOGGER.error("Failed to get device code: %s", e)
+                 _LOGGER.exception("Failed to get device code during config flow: %s", e)
                  return self.async_abort(reason="connection_error")
 
         else:
