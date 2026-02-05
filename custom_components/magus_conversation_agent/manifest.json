@@ -1,12 +1,14 @@
 {
   "domain": "magus_conversation_agent",
   "name": "Magus Conversation Agent",
-  "codeowners": ["@lorenzov"],
+  "codeowners": [
+    "@lorenzov"
+  ],
   "config_flow": true,
   "dependencies": [],
   "documentation": "",
   "iot_class": "cloud_polling",
   "issue_tracker": "",
   "requirements": [],
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

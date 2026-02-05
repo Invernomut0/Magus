@@ -21,11 +21,12 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Magus from a config entry."""
     access_token = entry.data["access_token"]
+    notify_entity = entry.data.get("notify_entity", "media_player.alexa_media_echo_dot_di_lorenzo")
     session = async_get_clientsession(hass)
     
     client = MagusCopilotClient(session, access_token=access_token)
     
-    agent = MagusConversationAgent(hass, client, entry)
+    agent = MagusConversationAgent(hass, client, entry, notify_entity)
     
     from homeassistant.components.conversation import async_set_agent
     await async_set_agent(hass, entry, agent)

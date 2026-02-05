@@ -59,10 +59,8 @@ class MagusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 )
                 
                 if access_token:
-                    return self.async_create_entry(
-                        title="Magus Copilot",
-                        data={"access_token": access_token}
-                    )
+                    self._access_token = access_token
+                    return await self.async_step_notify_config()
                 else:
                     errors["base"] = "authorization_pending"
             except Exception as e:
@@ -78,4 +76,27 @@ class MagusConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 "user_code": self._device_code_data["user_code"],
                 "verification_uri": self._device_code_data["verification_uri"],
             },
+        )
+    
+    async def async_step_notify_config(self, user_input: Optional[dict[str, Any]] = None) -> FlowResult:
+        """Handle the notification configuration step."""
+        if user_input is not None:
+            return self.async_create_entry(
+                title="Magus Copilot",
+                data={
+                    "access_token": self._access_token,
+                    "notify_entity": user_input["notify_entity"]
+                }
+            )
+
+        from homeassistant.helpers import selector
+        
+        return self.async_show_form(
+            step_id="notify_config",
+            data_schema=vol.Schema({
+                vol.Required("notify_entity"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain=["media_player", "notify"])
+                )
+            }),
+            last_step=True
         )
